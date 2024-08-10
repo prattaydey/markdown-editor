@@ -1,9 +1,13 @@
 interface EditorProps {
     markdown: string;
     setMarkdown: (markdown: string) => void;
+    isPreviewFull: boolean;
 }
 
-export default function Editor({ markdown, setMarkdown }: EditorProps) {
+export default function Editor({ markdown, setMarkdown, isPreviewFull }: EditorProps) {
+    if (isPreviewFull){
+        return null;
+    }
     return (
     <div className="border-r border-zinc-600">
         <div className="w-full bg-zinc-800 p-3 text-gray-400 uppercase tracking-wider">Markdown</div>
