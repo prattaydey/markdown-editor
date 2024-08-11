@@ -1,7 +1,20 @@
 import styled from "styled-components";
-import iconDocument from "../../assets/icon-document.svg";
+import iconDocument from "/assets/icon-document.svg";
+import { Document } from "../types";
+import CreateButton from "./CreateButton";
 
-const StyledSidebar = styled.div`
+// This interface is for the props used by StyledSidebar only
+interface StyledSidebarProps {
+    $isSidebar: boolean;
+}
+  
+// This interface is for the props passed to the Sidebar component
+interface SidebarProps extends StyledSidebarProps {
+    toggleSidebar: () => void;
+    documents: Document[];
+}
+
+const StyledSidebar = styled.div<StyledSidebarProps>`
   height: 100vh;
   width: 250px;
   position: fixed;
@@ -12,7 +25,7 @@ const StyledSidebar = styled.div`
   flex-flow: column nowrap;
   justify-content: space-between;
 
-  transform: translateX(${({ showSidebar }) => (showSidebar ? "0px" : "-250px")});
+  transform: translateX(${({ $isSidebar }) => ($isSidebar ? "0px" : "-250px")});
   transition: transform 0.3s ease;
 `;
 
@@ -73,7 +86,7 @@ const DocumentName = styled.div`
   color: #ffffff;
 
   ${DocumentLink}:hover & {
-    color: #e46643;
+    color: #7943e4;
   }
 `;
 
@@ -82,11 +95,12 @@ const ThemeContainer = styled.div`
   padding-bottom: 24px;
 `;
 
-const Sidebar = ({ isSidebar, toggleSidebar, documents }) => {
+const Sidebar = ({ $isSidebar, toggleSidebar, documents } : SidebarProps) => {
   return (
-    <StyledSidebar isSidebar={isSidebar}>
+    <StyledSidebar $isSidebar={$isSidebar}>
       <DocumentsContainer>
         <DocumentsTitle>MY DOCUMENTS</DocumentsTitle>
+        <CreateButton />
         <DocumentsList>
           {documents &&
             documents.map((document) => (

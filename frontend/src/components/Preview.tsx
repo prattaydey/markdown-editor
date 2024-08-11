@@ -36,9 +36,9 @@ export default function Preview({ markdown, isPreviewFull, togglePreview } : Pre
     }, [markdown]);
 
     return (
-      <div className="w-full h-full bg-zinc-900">
-        <div className="w-full bg-zinc-800 p-3 text-gray-400 uppercase tracking-wider flex justify-between items-center">
-          Preview
+      <div className="w-full h-full bg-zinc-900 flex flex-col" style={{ maxHeight: 'calc(100vh - 3.5rem)' }}>
+        <div className="w-full bg-zinc-800 p-2 text-gray-400 uppercase tracking-wider flex justify-between items-center">
+          <div className="ml-4"> Preview </div>
           <img 
             src= {`/assets/${isPreviewFull? 'icon-hide-preview' : 'icon-show-preview'}.svg`}
             alt={isPreviewFull ? "Show Editor" : "Hide Editor"}
@@ -46,7 +46,7 @@ export default function Preview({ markdown, isPreviewFull, togglePreview } : Pre
             onClick={togglePreview}
           />
           </div>
-        <div className="prose prose-invert h-full" style={{ maxWidth: isPreviewFull ? 'none' : '65ch', padding: '1.5rem' }} dangerouslySetInnerHTML={{ __html: sanitizedHtml }} />
+        <div className="prose prose-invert flex-grow overflow-y-auto" style={{ maxWidth: isPreviewFull ? 'none' : '100%', padding: '1.5rem' }} dangerouslySetInnerHTML={{ __html: sanitizedHtml }} />
     </div>
     )
 }
