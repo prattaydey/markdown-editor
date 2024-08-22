@@ -9,7 +9,7 @@ export default function Editor({ markdown, setMarkdown, isPreviewFull }: EditorP
         return null;
     }
     return (
-    <div className="border-r border-zinc-600 flex flex-col" style={{ maxHeight: 'calc(100vh - 3.5rem)' }}>
+    <div className="border-r border-zinc-600 flex flex-col" style={{ height: 'calc(100vh - 3.5rem)' }}>
         <div className="w-full bg-zinc-800 p-2 text-gray-400 uppercase tracking-wider">
             <div className="ml-4"> Markdown </div>
         </div>

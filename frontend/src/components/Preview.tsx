@@ -36,7 +36,7 @@ export default function Preview({ markdown, isPreviewFull, togglePreview } : Pre
     }, [markdown]);
 
     return (
-      <div className="w-full h-full bg-zinc-900 flex flex-col" style={{ maxHeight: 'calc(100vh - 3.5rem)' }}>
+      <div className="w-full h-full bg-zinc-900 flex flex-col" style={{ height: 'calc(100vh - 3.5rem)' }}>
         <div className="w-full bg-zinc-800 p-2 text-gray-400 uppercase tracking-wider flex justify-between items-center">
           <div className="ml-4"> Preview </div>
           <img 

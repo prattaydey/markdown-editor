@@ -18,7 +18,8 @@ const Navbar = ({ isSidebar, toggleSidebar } : NavbarProps) => {
             {/* Menu button */}
             <button className="mr-4 p-7 bg-zinc-600/40 hover:bg-violet-600" onClick={toggleSidebar}>
                 <div>
-                    <img src="/assets/icon-menu.svg" alt="menu" />
+                    <img 
+                    src={`/assets/${isSidebar? `icon-close` : `icon-menu`}.svg`} alt="menu" />
                 </div>
             </button>
             {/* Markdown logo */}
