@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import iconDocument from "/assets/icon-document.svg";
 import { Document } from "../types";
-import CreateButton from "./CreateButton";
+import { useSetRecoilState } from "recoil";
+import userAtom from "../atoms/userAtom.ts"
 
 // This interface is for the props used by StyledSidebar only
 interface StyledSidebarProps {
@@ -95,12 +96,84 @@ const ThemeContainer = styled.div`
   padding-bottom: 24px;
 `;
 
+const StyledCreateButton = styled.button`
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  width: 202px;
+  height: 40px;
+  padding: 0px 17px;
+  border: none;
+  border-radius: 4px;
+  color: #ffffff;
+  background-color: #7943e4;
+  font-family: "Roboto", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 18px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #8153db;
+  }
+`;
+
+const StyledLogoutButton = styled.button`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 202px;
+    height: 40px;
+    margin: 10px auto; // Center horizontally and add margin for spacing
+    border: none;
+    border-radius: 4px;
+    color: #ffffff;
+    background-color: #7943e4;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 18px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #8153db;
+    }
+`;
+
+
+
 const Sidebar = ({ $isSidebar, toggleSidebar, documents } : SidebarProps) => {
+  const setUser = useSetRecoilState(userAtom);
+
+	const handleLogout = async () => {
+		try {
+			const res = await fetch("/api/users/logout", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
+			const data = await res.json();
+
+			if (data.error) {
+        console.log(data.error)
+				return;
+			}
+
+			localStorage.removeItem("user-info");
+			setUser(null);
+		} catch (error) {
+			console.log(error)
+		}
+  };
+
   return (
     <StyledSidebar $isSidebar={$isSidebar}>
       <DocumentsContainer>
         <DocumentsTitle>MY DOCUMENTS</DocumentsTitle>
-        <CreateButton />
+        <StyledCreateButton>+ New Document</StyledCreateButton>
         <DocumentsList>
           {documents &&
             documents.map((document) => (
@@ -124,9 +197,7 @@ const Sidebar = ({ $isSidebar, toggleSidebar, documents } : SidebarProps) => {
             ))}
         </DocumentsList>
       </DocumentsContainer>
-      <ThemeContainer>
-        {/* Add ThemeSelection component here */}
-      </ThemeContainer>
+      <StyledLogoutButton style={{ marginBottom: '30px' }} onClick={handleLogout}>Logout</StyledLogoutButton>
     </StyledSidebar>
   );
 };

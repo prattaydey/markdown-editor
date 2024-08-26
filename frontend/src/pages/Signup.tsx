@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { redirect, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import Error from '../components/ErrorAlert';
 
 export default function Signup() {
+    const [error, setError] = useState(false);
+
     const [inputs, setInputs] = useState({
         email: "",
         username: "",
@@ -22,12 +25,12 @@ export default function Signup() {
             });
             const data = await res.json();
             if (data.error){
-                console.log(data.error)
+                setError(true);
                 return
             }
             localStorage.setItem("user-info", JSON.stringify(data));
             navigate("/");
-            
+
         } catch (error) {
             console.log("Error", error, "error")
         }
@@ -102,6 +105,9 @@ export default function Signup() {
                         </a>
                     </div>
                 </form>
+            </div>
+            <div className='pt-8'>
+                {error && <Error message='User already exists' />} {/* Conditionally render Error component */}
             </div>
         </div>
     );

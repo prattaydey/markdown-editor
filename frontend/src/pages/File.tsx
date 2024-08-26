@@ -4,25 +4,13 @@ import Preview from "../components/Preview"
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import { Document } from "../types";
+import { useParams } from "react-router-dom";
 
 function File() {
   const storedMarkdown = localStorage.getItem("MARKDOWN");
   const [markdown, setMarkdown] = useState(storedMarkdown ? storedMarkdown : '');
   const [isPreviewFull, setIsPreviewFull] = useState<boolean>(false);
   const [isSidebar, setIsSidebar] = useState<boolean>(false)
-
-  useEffect(() => {
-    if (!storedMarkdown) {
-      fetch('/defaulttext.txt')
-        .then(response => response.text())
-        .then(text => {
-          setMarkdown(text);
-          localStorage.setItem("MARKDOWN", text);
-        });
-    } else {
-      setMarkdown(storedMarkdown);
-    }
-  }, [storedMarkdown]);
 
   const callback = (markdown: string) => {
     setMarkdown(markdown);

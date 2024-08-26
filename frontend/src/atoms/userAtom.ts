@@ -2,8 +2,8 @@ import { atom } from "recoil";
 
 const userAtom = atom({
 	key: "userAtom",
-	default: localStorage.getItem("user-threads") 
-	? JSON.parse(localStorage.getItem("user-threads") as string) 
+	default: localStorage.getItem("user-info") 
+	? JSON.parse(localStorage.getItem("user-info") as string) 
 	: null,
 });
 
