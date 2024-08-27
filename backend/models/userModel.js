@@ -16,6 +16,13 @@ const userSchema = mongoose.Schema({
         required: true,
         unique: true
     },
+    files: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'File', // Reference to the File model
+          default: []
+        }
+      ]
 }, 
 {
     timestamps: true

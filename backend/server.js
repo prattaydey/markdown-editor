@@ -3,7 +3,7 @@ import cookieParser from "cookie-parser";
 import dotenv from 'dotenv';
 import connectDB from "./db/connectDB.js";
 import userRoutes from "./routes/userRoutes.js";
-// import fileRoutes from "./routes/fileRoutes.js";
+import fileRoutes from "./routes/fileRoutes.js";
 
 dotenv.config();
 
@@ -19,7 +19,7 @@ app.use(cookieParser());
 
 // Routes
 app.use("/api/users", userRoutes)
-// app.use("/api/files", fileRoutes)
+app.use("/api/files", fileRoutes)
 
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
