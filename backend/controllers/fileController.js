@@ -87,4 +87,41 @@ const getUserFiles = async (req, res) => {
 	}
 };
 
-export { createFile, getFile, deleteFile, getUserFiles }
+const saveFile = async (req, res) => {
+    try {
+        const { id } = req.params;  // Get fileId from request parameters
+        const { title, text } = req.body;  // Get new title and text from request body
+
+        // Find the file by its ID
+        const file = await File.findById(id);
+        if (!file) {
+            return res.status(404).json({ error: "File not found" });
+        }
+
+        // Check if there are any changes in the title or text
+        let isUpdated = false;
+
+        if (title && title !== file.title) {
+            file.title = title;
+            isUpdated = true;
+        }
+
+        if (text && text !== file.text) {
+            file.text = text;
+            isUpdated = true;
+        }
+
+        // If there are changes, save the updated file
+        if (isUpdated) {
+            await file.save();
+            return res.status(200).json({ message: "File updated successfully", file });
+        } else {
+            return res.status(200).json({ message: "No changes detected" });
+        }
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+        console.log(err);
+    }
+};
+
+export { createFile, getFile, deleteFile, getUserFiles, saveFile }
