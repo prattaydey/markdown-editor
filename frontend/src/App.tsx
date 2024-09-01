@@ -12,9 +12,9 @@ function App() {
   
   return (
     <Routes>
-      <Route path="/" element={user ? <Navigate to={`/${username}`} /> : <Login />} />
-      <Route path="/register" element={user ? <Navigate to={`/${username}`} /> : <Signup />} />
-      <Route path="/:username" element={user ? <File /> : <Navigate to="/" />} />
+      <Route path="/" element={user ? <Navigate to={`/${username}/:id`} /> : <Login />} />
+      <Route path="/register" element={user ? <Navigate to={`/${username}/:id`} /> : <Signup />} />
+      <Route path="/:username/:fileId" element={user ? <File /> : <Navigate to="/" />} />
     </Routes>
   )
 };

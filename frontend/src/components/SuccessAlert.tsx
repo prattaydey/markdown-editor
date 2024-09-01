@@ -1,4 +1,9 @@
-const Success = () => {
+// Define the props interface
+interface SuccessProps {
+    message: string; // Specify that message must be a string
+  }
+
+const Success = ({message} : SuccessProps) => {
     return (
         <div className="bg-teal-50 border-t-2 border-teal-500 rounded-lg p-4 dark:bg-teal-800/30" role="alert" aria-labelledby="hs-bordered-success-style-label">
             <div className="flex">
@@ -14,10 +19,10 @@ const Success = () => {
                 </div>
                 <div className="ms-3">
                     <h3 id="hs-bordered-success-style-label" className="text-gray-800 font-semibold dark:text-white">
-                    Successfully updated.
+                    Success
                     </h3>
                     <p className="text-sm text-gray-700 dark:text-neutral-400">
-                    You have successfully updated your email preferences.
+                    {message}
                     </p>
                 </div>
             </div>

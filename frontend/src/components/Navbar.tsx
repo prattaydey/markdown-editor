@@ -1,17 +1,70 @@
 import { useState } from "react";
+import Error from "./ErrorAlert";
+import Success from "./SuccessAlert";
 
 interface NavbarProps {
     isSidebar: boolean;
     toggleSidebar: () => void;
+    username: string;
+    fileId: string;
+    fileName: string;
+    setFileName: (title: string) => void;
+    currentMarkdown: string;
 }
 
-const Navbar = ({ isSidebar, toggleSidebar } : NavbarProps) => {
-    const [documentName, setDocumentName] = useState("welcome.md");
+const Navbar = ({ isSidebar, toggleSidebar, username, fileId, fileName, setFileName, currentMarkdown } : NavbarProps) => {
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState(false);
 
     const changeDocumentName = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setDocumentName(e.target.value);
+        setFileName(e.target.value);
     };
 
+    const handleSaveFile = async() => {
+        try {
+            const res = await fetch(`/api/files/${fileId}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ title: fileName, text: currentMarkdown })
+            });
+            const data = await res.json()
+            if (data.error){
+                console.log(data.error)
+                setError(true);
+                return;
+            }
+            console.log("File saved successfully:", data);
+            setSuccess(true);
+        } catch (error) {
+            console.error("Error saving file:", error);
+            setError(true);
+        }
+    }
+
+    const handleDeleteFile = async() => {
+        try {
+            const res = await fetch(`/api/files/${fileId}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            });
+            const data = await res.json();
+            if (data.error){
+                console.log(data.error)
+                setError(true)
+                return;
+            }
+            console.log("File deleted successfully:", data);
+            setSuccess(true);
+        } catch (error) {
+            console.error("Error deleting file:", error);
+            setError(true);
+        }
+    }
+    
     return (
     <div className="w-full h-13 bg-zinc-700/70 pr-6 flex justify-between items-center">
         <div className="flex items-center">
@@ -37,7 +90,7 @@ const Navbar = ({ isSidebar, toggleSidebar } : NavbarProps) => {
                 <input
                     type="text"
                     className="bg-transparent border-none text-white text-lg outline-none focus:underline"
-                    value={documentName}
+                    value={fileName}
                     onChange={changeDocumentName}
                     // disables red underlines
                     spellCheck="false"   
@@ -50,19 +103,23 @@ const Navbar = ({ isSidebar, toggleSidebar } : NavbarProps) => {
          </div>
         <div className="flex items-center">
             {/* Trash Icon */}
-            <button className="ml-4 p-2 pr-6 bg-transparent">
+            <button className="ml-4 p-2 pr-6 bg-transparent" onClick={handleDeleteFile}>
                 <div>
                     <img src="/assets/icon-delete.svg" alt="trash icon" />
                 </div>
             </button>
             {/* Save Button */}
-            <button className="flex items-center py-2 px-3 bg-violet-600 text-white rounded">
+            <button className="flex items-center py-2 px-3 bg-violet-600 text-white rounded" onClick={handleSaveFile}>
                 <div className="pr-2">
                     <img src="/assets/icon-save.svg" alt="save icon" />
                 </div>
                 Save Changes
             </button>
         </div>
+        {/* <div className='pt-8'>
+                {error && <Error message='Could not save file' />}
+                {success && <Success message='Successfully saved file' />}
+        </div> */}
     </div>
   );
 };

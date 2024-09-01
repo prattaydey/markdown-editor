@@ -65,9 +65,9 @@ const deleteFile = async (req, res) => {
 		
 		await File.findByIdAndDelete(req.params.id);
 
-		res.status(200).json({ message: "File deleted successfully" });
+		return res.status(200).json({ message: "File deleted successfully" });
 	} catch (err) {
-		res.status(500).json({ error: err.message });
+		return res.status(500).json({ error: err.message });
 	}
 };
 
@@ -79,7 +79,9 @@ const getUserFiles = async (req, res) => {
 			return res.status(404).json({ error: "User not found" });
 		}
 
-		const files = await File.find({ postedBy: user._id }).sort({ createdAt: -1 });
+		const files = await File.find({ postedBy: user._id })
+		.select("_id title createdAt")
+		.sort({ createdAt: -1 });
 
 		res.status(200).json(files);
 	} catch (error) {
