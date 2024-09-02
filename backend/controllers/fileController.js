@@ -80,8 +80,8 @@ const getUserFiles = async (req, res) => {
 		}
 
 		const files = await File.find({ postedBy: user._id })
-		.select("_id title createdAt")
-		.sort({ createdAt: -1 });
+		.select("_id title updatedAt")
+		.sort({ updatedAt: -1 });
 
 		res.status(200).json(files);
 	} catch (error) {

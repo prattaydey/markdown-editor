@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Error from "./ErrorAlert";
 import Success from "./SuccessAlert";
+import { useNavigate } from "react-router-dom";
+import { Document } from "../types";
 
 interface NavbarProps {
     isSidebar: boolean;
@@ -10,11 +12,16 @@ interface NavbarProps {
     fileName: string;
     setFileName: (title: string) => void;
     currentMarkdown: string;
+    files: Document[];
+    setFiles: React.Dispatch<React.SetStateAction<Document[]>>;
 }
 
-const Navbar = ({ isSidebar, toggleSidebar, username, fileId, fileName, setFileName, currentMarkdown } : NavbarProps) => {
+const Navbar = ({ isSidebar, toggleSidebar, username, fileId, fileName, setFileName, currentMarkdown, files, setFiles } : NavbarProps) => {
+    const navigate = useNavigate();
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
+    const [buttonText, setButtonText] = useState("Save Changes"); // State for button text
+    const [buttonColor, setButtonColor] = useState("bg-violet-600"); // State for button color
 
     const changeDocumentName = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFileName(e.target.value);
@@ -37,6 +44,15 @@ const Navbar = ({ isSidebar, toggleSidebar, username, fileId, fileName, setFileN
             }
             console.log("File saved successfully:", data);
             setSuccess(true);
+            setButtonText("File Saved");
+            setButtonColor("bg-green-600");
+      
+            // Revert button state after 3 seconds
+            setTimeout(() => {
+              setSuccess(false);
+              setButtonText("Save Changes");
+              setButtonColor("bg-violet-600");
+            }, 3000);
         } catch (error) {
             console.error("Error saving file:", error);
             setError(true);
@@ -57,6 +73,19 @@ const Navbar = ({ isSidebar, toggleSidebar, username, fileId, fileName, setFileN
                 setError(true)
                 return;
             }
+            // Update files state by removing the deleted file
+            setFiles((prevFiles) => {
+                const updatedFiles = prevFiles.filter(file => file._id !== fileId);
+
+            // Redirect to the top file of the updated files array
+                if (updatedFiles.length > 0) {
+                navigate(`/${username}/${updatedFiles[0]._id}`);
+                } else {
+                navigate("/");  // or navigate to a default route if no files remain
+                }
+
+                return updatedFiles;  // Return the updated files array to update the state
+            });
             console.log("File deleted successfully:", data);
             setSuccess(true);
         } catch (error) {
@@ -109,11 +138,11 @@ const Navbar = ({ isSidebar, toggleSidebar, username, fileId, fileName, setFileN
                 </div>
             </button>
             {/* Save Button */}
-            <button className="flex items-center py-2 px-3 bg-violet-600 text-white rounded" onClick={handleSaveFile}>
+            <button className={`flex items-center py-2 px-3 ${buttonColor} text-white rounded`} onClick={handleSaveFile}>
                 <div className="pr-2">
                     <img src="/assets/icon-save.svg" alt="save icon" />
                 </div>
-                Save Changes
+                {buttonText}
             </button>
         </div>
         {/* <div className='pt-8'>

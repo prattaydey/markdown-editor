@@ -1,5 +1,5 @@
 export interface Document {
-    id: number;
-    name: string;
-    createdAt: string;
+    _id: string;
+    title: string;
+    updatedAt: string;
   }

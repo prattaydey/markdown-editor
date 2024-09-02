@@ -3,6 +3,14 @@ import iconDocument from "/assets/icon-document.svg";
 import { Document } from "../types";
 import { useSetRecoilState } from "recoil";
 import userAtom from "../atoms/userAtom.ts"
+import { useNavigate } from "react-router-dom";
+
+// for the user atom that is passed in
+interface User {
+  _id: string;
+  username: string;
+  email: string;
+}
 
 // This interface is for the props used by StyledSidebar only
 interface StyledSidebarProps {
@@ -12,7 +20,9 @@ interface StyledSidebarProps {
 // This interface is for the props passed to the Sidebar component
 interface SidebarProps extends StyledSidebarProps {
     toggleSidebar: () => void;
-    documents: Document[];
+    user: User;
+    files: Document[];
+    setFiles: React.Dispatch<React.SetStateAction<Document[]>>;
 }
 
 const StyledSidebar = styled.div<StyledSidebarProps>`
@@ -144,8 +154,11 @@ const StyledLogoutButton = styled.button`
 
 
 
-const Sidebar = ({ $isSidebar, toggleSidebar, documents } : SidebarProps) => {
+const Sidebar = ({ $isSidebar, toggleSidebar, user, files, setFiles } : SidebarProps) => {
+  const username = user.username;
+  const id = user._id;
   const setUser = useSetRecoilState(userAtom);
+  const navigate = useNavigate();
 
 	const handleLogout = async () => {
 		try {
@@ -169,28 +182,57 @@ const Sidebar = ({ $isSidebar, toggleSidebar, documents } : SidebarProps) => {
 		}
   };
 
+  const handleNewFile = async () => {
+    try {
+      const res = await fetch("/api/files/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ postedBy: id })
+      });
+      const data = await res.json();
+      if (data.error) {
+        console.log(data.error)
+        return;
+      }
+      setFiles((prevFiles) => [...prevFiles, data as Document]);
+      handleFileClick(data._id);
+      console.log("New document created:", data)
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleFileClick = (fileId: string) => {
+    // Redirect to the document's specific URL
+    navigate(`/${username}/${fileId}`);
+    toggleSidebar(); // Optionally close the sidebar after navigation
+  };
+
   return (
     <StyledSidebar $isSidebar={$isSidebar}>
       <DocumentsContainer>
         <DocumentsTitle>MY DOCUMENTS</DocumentsTitle>
-        <StyledCreateButton>+ New Document</StyledCreateButton>
+        <StyledCreateButton onClick={handleNewFile}>+ New Document</StyledCreateButton>
         <DocumentsList>
-          {documents &&
-            documents.map((document) => (
+          {files &&
+            files.map((file) => (
               <DocumentLink
                 onClick={() => {
                   // handle document click
-                  toggleSidebar();
+                  handleFileClick(file._id)
                 }}
-                key={document.id}
+                key={file._id}
               >
                 <DocumentIcon src={iconDocument} />
                 <DocumentInformation>
-                  <DocumentDate>{document.createdAt}</DocumentDate>
+                  <DocumentDate>{new Date(file.updatedAt).toISOString().split('T')[0]}</DocumentDate>
                   <DocumentName>
-                    {document.name.length > 21
-                      ? document.name.slice(0, 20) + "..."
-                      : document.name}
+                    {file.title.length > 21
+                      ? file.title.slice(0, 20) + "..."
+                      : file.title}
                   </DocumentName>
                 </DocumentInformation>
               </DocumentLink>
