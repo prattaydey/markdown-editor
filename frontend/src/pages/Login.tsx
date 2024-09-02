@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import userAtom from '../atoms/userAtom.ts';
-import Success from '../components/SuccessAlert.tsx';
 import Error from '../components/ErrorAlert.tsx';
 
 export default function Login() {

@@ -10,11 +10,10 @@ interface User {
 
 interface EmptyPageProps {
     user: User;
-    files: Document[];
     setFiles: React.Dispatch<React.SetStateAction<Document[]>>;
 }
 
-export default function EmptyPage({ user, files, setFiles } : EmptyPageProps) {
+export default function EmptyPage({ user, setFiles } : EmptyPageProps) {
     const username = user.username;
     const id = user._id;
     const navigate = useNavigate();

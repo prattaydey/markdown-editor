@@ -1,6 +1,4 @@
 import { useState } from "react";
-import Error from "./ErrorAlert";
-import Success from "./SuccessAlert";
 import { useNavigate } from "react-router-dom";
 import { Document } from "../types";
 
@@ -12,14 +10,12 @@ interface NavbarProps {
     fileName: string;
     setFileName: (title: string) => void;
     currentMarkdown: string;
-    files: Document[];
     setFiles: React.Dispatch<React.SetStateAction<Document[]>>;
+    fetchData: () => Promise<void>; // Add fetchData to props
 }
 
-const Navbar = ({ isSidebar, toggleSidebar, username, fileId, fileName, setFileName, currentMarkdown, files, setFiles } : NavbarProps) => {
+const Navbar = ({ isSidebar, toggleSidebar, username, fileId, fileName, setFileName, currentMarkdown, setFiles, fetchData } : NavbarProps) => {
     const navigate = useNavigate();
-    const [success, setSuccess] = useState(false);
-    const [error, setError] = useState(false);
     const [buttonText, setButtonText] = useState("Save Changes"); // State for button text
     const [buttonColor, setButtonColor] = useState("bg-violet-600"); // State for button color
 
@@ -39,23 +35,20 @@ const Navbar = ({ isSidebar, toggleSidebar, username, fileId, fileName, setFileN
             const data = await res.json()
             if (data.error){
                 console.log(data.error)
-                setError(true);
                 return;
             }
             console.log("File saved successfully:", data);
-            setSuccess(true);
             setButtonText("File Saved");
             setButtonColor("bg-green-600");
       
             // Revert button state after 3 seconds
             setTimeout(() => {
-              setSuccess(false);
               setButtonText("Save Changes");
               setButtonColor("bg-violet-600");
+              fetchData();
             }, 3000);
         } catch (error) {
             console.error("Error saving file:", error);
-            setError(true);
         }
     }
 
@@ -69,8 +62,7 @@ const Navbar = ({ isSidebar, toggleSidebar, username, fileId, fileName, setFileN
             });
             const data = await res.json();
             if (data.error){
-                console.log(data.error)
-                setError(true)
+                console.log(data.error);
                 return;
             }
             // Update files state by removing the deleted file
@@ -87,10 +79,8 @@ const Navbar = ({ isSidebar, toggleSidebar, username, fileId, fileName, setFileN
                 return updatedFiles;  // Return the updated files array to update the state
             });
             console.log("File deleted successfully:", data);
-            setSuccess(true);
         } catch (error) {
             console.error("Error deleting file:", error);
-            setError(true);
         }
     }
     
@@ -145,10 +135,6 @@ const Navbar = ({ isSidebar, toggleSidebar, username, fileId, fileName, setFileN
                 {buttonText}
             </button>
         </div>
-        {/* <div className='pt-8'>
-                {error && <Error message='Could not save file' />}
-                {success && <Success message='Successfully saved file' />}
-        </div> */}
     </div>
   );
 };

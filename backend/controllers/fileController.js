@@ -15,6 +15,11 @@ const createFile = async (req, res) => {
 			return res.status(404).json({ error: "User not found" });
 		}
 
+		// Ensure title ends with ".md"
+        if (title && !title.endsWith('.md')) {
+            title += '.md';
+        }
+
 		const newFile = new File({
             postedBy,
             title: title || "Untitled.md",
@@ -102,8 +107,11 @@ const saveFile = async (req, res) => {
 
         // Check if there are any changes in the title or text
         let isUpdated = false;
-
-        if (title && title !== file.title) {
+		// Ensure title ends with ".md"
+        if (title && !title.endsWith('.md')) {
+            title += '.md';
+        }
+        else if (title && title !== file.title) {
             file.title = title;
             isUpdated = true;
         }

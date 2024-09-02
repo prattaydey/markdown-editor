@@ -101,11 +101,6 @@ const DocumentName = styled.div`
   }
 `;
 
-const ThemeContainer = styled.div`
-  padding-left: 24px;
-  padding-bottom: 24px;
-`;
-
 const StyledCreateButton = styled.button`
   display: flex;
   flex-flow: row nowrap;
@@ -151,7 +146,6 @@ const StyledLogoutButton = styled.button`
       background-color: #8153db;
     }
 `;
-
 
 
 const Sidebar = ({ $isSidebar, toggleSidebar, user, files, setFiles } : SidebarProps) => {

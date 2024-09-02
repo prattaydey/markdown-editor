@@ -43,10 +43,10 @@ function App() {
   }, [username]); // Dependency on username to refetch files if it changes
 
   // Render only after data has been fetched and loading is complete
-  if (isLoading) {
+  if (user && isLoading) {
     return <div>Loading...</div>;
   }
-
+  console.log(isLoading);
   return (
     <Routes>
       <Route path="/" element={user ? <Navigate to={`/${username}/${fileId}`} /> : <Login />} />

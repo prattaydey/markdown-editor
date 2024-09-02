@@ -29,12 +29,35 @@ export default function Signup() {
                 return
             }
             localStorage.setItem("user-info", JSON.stringify(data));
+            // Read the content from the defaulttext.txt file
+            const welcomeText = await fetch("/defaulttext.txt").then((res) =>
+                res.text()
+            );
+  
+            // Create welcome.md file API call
+            const createFileRes = await fetch("/api/files/create", {
+                method: "POST",
+                headers: {
+                "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    postedBy: data._id,
+                    title: "welcome.md",
+                    text: welcomeText,
+                }),
+            });
+  
+            const createFileData = await createFileRes.json();
+            if (createFileData.error) {
+                console.log("Error creating welcome file:", createFileData.error);
+                return;
+            }
             navigate("/");
-
         } catch (error) {
             console.log("Error", error, "error")
         }
     }
+    
     return (
         <div className="flex flex-col items-center justify-center min-h-screen w-full bg-white dark:bg-zinc-900">
             <img src="./assets/logo.svg" alt="logo" className="-mt-12 mb-20 w-1/5 h-auto"/>
