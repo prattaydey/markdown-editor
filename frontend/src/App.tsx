@@ -46,7 +46,6 @@ function App() {
   if (user && isLoading) {
     return <div>Loading...</div>;
   }
-  console.log(isLoading);
   return (
     <Routes>
       <Route path="/" element={user ? <Navigate to={`/${username}/${fileId}`} /> : <Login />} />
