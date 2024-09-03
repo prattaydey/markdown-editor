@@ -2,60 +2,23 @@
     "version": 2,
     "builds": [
       {
-        "src": "src/pages/File.tsx",
-        "use": "@vercel/node"
+        "src": "package.json",
+        "use": "@vercel/static-build",
+        "config": { "distDir": "dist" }
       },
       {
-        "src": "src/pages/Login.tsx",
-        "use": "@vercel/node"
-      },
-      {
-        "src": "src/pages/Signup.tsx",
+        "src": "api/**/*.js",
         "use": "@vercel/node"
       }
     ],
     "routes": [
       {
-        "src": "/",
+        "src": "/(.*)",
         "dest": "/index.html"
       },
       {
-        "src": "/register",
-        "dest": "/index.html"
-      },
-      {
-        "src": "/:username/:fileId",
-        "dest": "/index.html"
-      },
-      {
-        "src": "/api/users/signup",
-        "dest": "/api/users/signup"
-      },
-      {
-        "src": "/api/users/login",
-        "dest": "/api/users/login"
-      },
-      {
-        "src": "/api/users/logout",
-        "dest": "/api/users/logout"
-      },
-      {
-        "src": "/api/files/create",
-        "dest": "/api/files/create"
-      },
-      {
-        "src": "/api/files/:fileId",
-        "dest": "/api/files/[fileId]"
-      },
-      {
-        "src": "/api/files/user/:username",
-        "dest": "/api/files/user/[username]"
-      }
-    ],
-    "rewrites": [
-      {
-        "source": "/api/:path*",
-        "destination": "/api/:path*"
+        "src": "/api/:path*",
+        "dest": "/api/:path*"
       }
     ]
   }
