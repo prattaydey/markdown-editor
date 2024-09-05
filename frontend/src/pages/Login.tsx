@@ -34,7 +34,7 @@ export default function Login() {
 			console.log(error)
 	    }
     }
-
+    console.log(API_BASE_URL)
     return (
         <div className="flex flex-col items-center justify-center min-h-screen w-full bg-white dark:bg-zinc-900">
             <img src="./assets/logo.svg" alt="logo" className="-mt-12 mb-20 w-1/5 h-auto"/>
