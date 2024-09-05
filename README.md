@@ -16,6 +16,7 @@ This project is a web-based Markdown editor that allows users to write, edit, an
 - Deployment: Vercel, Render
 
 ## Preview
-<img width="1000" alt="signup.png" src="/frontend/public/signupPreview.png">
-<img width="1000" alt="login.png" src="/frontend/public/loginPreview.png">
-<img width="1000" alt="file.png" src="/frontend/public/filePreview.png">
+### Website Link: https://markdown-editor-ashy.vercel.app/
+<img width="1000" alt="signup.png" src="frontend/public/assets/signupPreview.png">
+<img width="1000" alt="login.png" src="frontend/public/assets/loginPreview.png">
+<img width="1000" alt="file.png" src="frontend/public/assets/filePreview.png">
