@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import userAtom from '../atoms/userAtom.ts';
 import Error from '../components/ErrorAlert.tsx';
+import API_BASE_URL from '../apiConfig.ts';
 
 export default function Login() {
     const setUser = useSetRecoilState(userAtom);
@@ -15,7 +16,7 @@ export default function Login() {
     const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 		try {
-			const res = await fetch("/api/users/login", {
+			const res = await fetch(`${API_BASE_URL}/api/users/login`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
