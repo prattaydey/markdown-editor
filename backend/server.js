@@ -18,7 +18,7 @@ app.use(express.json({ limit: "50mb" })); // to parse JSON data in req.body
 app.use(express.urlencoded({extended: true})); // to parse form data in the req.body
 app.use(cookieParser());
 app.use(cors({
-  origin: 'https://markdown-editor-ashy.vercel.app/'
+  origin: 'https://markdown-editor-ashy.vercel.app'
 }));
 
 // Routes
