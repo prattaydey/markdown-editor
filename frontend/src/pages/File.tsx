@@ -8,6 +8,7 @@ import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import { useParams } from "react-router-dom";
 import EmptyPage from "../components/EmptyPage";
+import API_BASE_URL from '../apiConfig.ts';
 
 interface FileProps {
   files: Document[];
@@ -38,7 +39,7 @@ function File({ files, setFiles } : FileProps) {
 
   const fetchData = async() => {
     try {
-      const res = await fetch(`/api/files/${fileId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/files/${fileId}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

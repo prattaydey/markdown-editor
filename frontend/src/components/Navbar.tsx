@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Document } from "../types";
+import API_BASE_URL from "../apiConfig.ts";
 
 interface NavbarProps {
     isSidebar: boolean;
@@ -25,7 +26,7 @@ const Navbar = ({ isSidebar, toggleSidebar, username, fileId, fileName, setFileN
 
     const handleSaveFile = async() => {
         try {
-            const res = await fetch(`/api/files/${fileId}`, {
+            const res = await fetch(`${API_BASE_URL}/api/files/${fileId}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
@@ -54,7 +55,7 @@ const Navbar = ({ isSidebar, toggleSidebar, username, fileId, fileName, setFileN
 
     const handleDeleteFile = async() => {
         try {
-            const res = await fetch(`/api/files/${fileId}`, {
+            const res = await fetch(`${API_BASE_URL}/api/files/${fileId}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",

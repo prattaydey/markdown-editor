@@ -4,6 +4,7 @@ import { Document } from "../types";
 import { useSetRecoilState } from "recoil";
 import userAtom from "../atoms/userAtom.ts"
 import { useNavigate } from "react-router-dom";
+import API_BASE_URL from "../apiConfig.ts";
 
 // for the user atom that is passed in
 interface User {
@@ -156,7 +157,7 @@ const Sidebar = ({ $isSidebar, toggleSidebar, user, files, setFiles } : SidebarP
 
 	const handleLogout = async () => {
 		try {
-			const res = await fetch("/api/users/logout", {
+			const res = await fetch(`${API_BASE_URL}/api/users/logout`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -178,7 +179,7 @@ const Sidebar = ({ $isSidebar, toggleSidebar, user, files, setFiles } : SidebarP
 
   const handleNewFile = async () => {
     try {
-      const res = await fetch("/api/files/create", {
+      const res = await fetch(`${API_BASE_URL}/api/files/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

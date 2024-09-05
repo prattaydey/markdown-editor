@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Error from '../components/ErrorAlert';
+import API_BASE_URL from '../apiConfig.ts';
 
 export default function Signup() {
     const [error, setError] = useState(false);
@@ -16,7 +17,7 @@ export default function Signup() {
     const handleSignup = async (event: React.FormEvent) => {
         event.preventDefault();
         try {
-            const res = await fetch("/api/users/signup", {
+            const res = await fetch(`${API_BASE_URL}/api/users/signup`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -35,7 +36,7 @@ export default function Signup() {
             );
   
             // Create welcome.md file API call
-            const createFileRes = await fetch("/api/files/create", {
+            const createFileRes = await fetch(`${API_BASE_URL}/api/files/create`, {
                 method: "POST",
                 headers: {
                 "Content-Type": "application/json",
