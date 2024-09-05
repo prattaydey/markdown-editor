@@ -7,6 +7,7 @@ import { useRecoilValue } from "recoil";
 import userAtom from "./atoms/userAtom.ts";
 import { useEffect, useState } from "react";
 import { Document } from "./types.ts";
+import API_BASE_URL from "./apiConfig.ts";
 
 function App() {
   const user = useRecoilValue(userAtom)
@@ -18,7 +19,7 @@ function App() {
   useEffect(() => {
     const handleUserFiles = async() => {
       try {
-        const res = await fetch(`/api/files/user/${username}`, {
+        const res = await fetch(`${API_BASE_URL}/api/files/user/${username}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json"
