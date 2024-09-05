@@ -16,10 +16,6 @@ This project is a web-based Markdown editor that allows users to write, edit, an
 - Deployment: Vercel, Render
 
 ## Preview
-
-### Signup Page
-<img width="1000" alt="signup.png" src="frontend/public/signupPreview.png">
-### Login Page
-<img width="1000" alt="login.png" src="frontend/public/loginPreview.png">
-### Dashboard
-<img width="1000" alt="file.png" src="frontend/public/filePreview.png">
+<img width="1000" alt="signup.png" src="/frontend/public/signupPreview.png">
+<img width="1000" alt="login.png" src="/frontend/public/loginPreview.png">
+<img width="1000" alt="file.png" src="/frontend/public/filePreview.png">
